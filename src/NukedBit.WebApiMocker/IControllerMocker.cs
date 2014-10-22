@@ -14,6 +14,8 @@ namespace NukedBit.WebApiMocker
 
         IControllerMocker<T> Filters(IEnumerable<FilterInfo> filters);
 
+        IControllerMocker<T> AutoMapFilters();
+
         IControllerMocker<T> Request(Uri requestUri, HttpMethod method);
 
         IControllerMocker<T> Build();

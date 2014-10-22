@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
@@ -42,6 +43,12 @@ namespace NukedBit.WebApiMocker
         public IControllerMocker<T> Filters(IEnumerable<FilterInfo> filters)
         {
             _filters = filters;
+            return this;
+        }
+
+        public IControllerMocker<T> AutoMapFilters()
+        {
+            _filters =  _controller.GetType().GetCustomAttributes(typeof (ExceptionFilterAttribute), true).Select(p=> new FilterInfo((IFilter)p,FilterScope.Controller));
             return this;
         }
 
