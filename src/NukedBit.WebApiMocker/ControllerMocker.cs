@@ -19,6 +19,7 @@ namespace NukedBit.WebApiMocker
         private IEnumerable<FilterInfo> _filters;
         private Uri _requestUri;
         private HttpMethod _method;
+        private bool _hasBuild = false;
 
         public ControllerMocker(T controller)
         {
@@ -48,6 +49,7 @@ namespace NukedBit.WebApiMocker
         {
             _requestUri = requestUri;
             _method = method;
+            return this;
         }
 
         public IControllerMocker<T> Build()
@@ -83,8 +85,6 @@ namespace NukedBit.WebApiMocker
             servicesMock.Setup(r => r.GetServices(typeof(IFilterProvider)))
                 .Returns(new object[] { filterProviderMock.Object });
 
-            servicesMock.Setup(r => r.GetServices(typeof(IFilterProvider)))
-                .Returns(new object[] { filterProviderMock.Object });
 
 
             _controller.ControllerContext = new HttpControllerContext(configuration, httpRouteData, request)
@@ -93,11 +93,15 @@ namespace NukedBit.WebApiMocker
                 Controller = _controller
             };
 
+            _hasBuild = true;
+
             return this;
         }
 
         public HttpResponseMessage Execute()
         {
+            if (!_hasBuild)
+                throw new InvalidOperationException("You must call build before execute.");
             return _controller.ExecuteAsync(_controller.ControllerContext,
                 CancellationToken.None).GetAwaiter().GetResult();
         }
