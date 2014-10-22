@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{0DC6592F-4BE6-4E2F-AA1F-106357505966}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.Tests", "Examples\Examples.Tests.csproj", "{0DC6592F-4BE6-4E2F-AA1F-106357505966}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NukedBit.WebApiMocker", "NukedBit.WebApiMocker\NukedBit.WebApiMocker.csproj", "{D51A8738-E989-4205-804A-69998AB1D15D}"
 EndProject
