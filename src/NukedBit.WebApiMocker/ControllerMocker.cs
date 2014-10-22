@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using System.Web.Http.Routing;
 using System.Web.Http.Services;
 using Moq;
 
@@ -21,6 +22,8 @@ namespace NukedBit.WebApiMocker
         private Uri _requestUri;
         private HttpMethod _method;
         private bool _hasBuild = false;
+        private Mock<UrlHelper> _urlHelperMock;
+
 
         public ControllerMocker(T controller)
         {
@@ -56,6 +59,20 @@ namespace NukedBit.WebApiMocker
         {
             _requestUri = requestUri;
             _method = method;
+            return this;
+        }
+
+        public IControllerMocker<T> UrlHelperLink(Uri linkUri)
+        {
+            _urlHelperMock = new Mock<UrlHelper>();
+            _urlHelperMock.Setup(m => m.Link(It.IsAny<string>(), It.IsAny<object>()));
+            return this;
+        }
+
+        public IControllerMocker<T> UrlHelperCustom(Action<Mock<UrlHelper>> urlHelperMockAction)
+        {
+            _urlHelperMock = new Mock<UrlHelper>();
+            urlHelperMockAction(_urlHelperMock);
             return this;
         }
 
@@ -99,6 +116,9 @@ namespace NukedBit.WebApiMocker
                 ControllerDescriptor = CreateControllerDescriptor(configuration),
                 Controller = _controller
             };
+
+            if (_urlHelperMock != null)
+                _controller.Url = _urlHelperMock.Object;
 
             _hasBuild = true;
 
