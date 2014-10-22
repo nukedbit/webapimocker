@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.githubusercontent.com/nukedbit/webapimocker/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/nukedbit/webapimocker</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A web api controller fluent mocking utility</description>
+    <releaseNotes>first release</releaseNotes>
+    <copyright>Copyright Sebastian Faltoni 2014</copyright>
+    <tags>webapi controller mock moq</tags>
+  </metadata>
+</package>
