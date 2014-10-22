@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerExtensions.cs" />
+    <Compile Include="ControllerMocker.cs" />
     <Compile Include="IControllerMocker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
