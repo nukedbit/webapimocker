@@ -1,6 +1,6 @@
 # Web Api Controller Mocking Helpers
 
-![Build Status](https://ci.appveyor.com/api/projects/status/github/webapimocker)
+[![Build status](https://ci.appveyor.com/api/projects/status/grvxvo7ax034vfyy?svg=true)](https://ci.appveyor.com/project/nukedbit/webapimocker)
 
 Why this framework?
 
