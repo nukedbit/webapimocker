@@ -21,4 +21,8 @@ But no more!! with a few line of code, you can get a controller with a mocked ht
 						.Execute(); 
 
 
+## Installation
+
+    PM> Install-Package NukedBit.WebApiMocker
+
 
