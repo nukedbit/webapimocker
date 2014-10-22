@@ -1,5 +1,7 @@
 # Web Api Controller Mocking Helpers
 
+![Build Status](https://ci.appveyor.com/api/projects/status/github/webapimocker)
+
 Why this framework?
 
 Lets say for example, you have a controller with a custom attribute for error handling.
