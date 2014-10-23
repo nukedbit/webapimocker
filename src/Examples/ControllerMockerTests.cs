@@ -72,6 +72,25 @@ namespace Examples
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
+
+
+        [Test]
+        public void UrlHelper()
+        {
+            var simpleController = new SimpleController();
+            const string expected = "http://localhost/simpleget/prova";
+            simpleController
+                .Mocker()
+                .Configure(c => c.MapHttpAttributeRoutes())
+                .Request(new Uri("http://localhost/simpleget/prova"), HttpMethod.Get)
+                .UrlHelperLink(expected)
+                .AutoMapFilters()
+                .Build();
+
+           string result =  simpleController.Url.Link("route", new {message = "prova"});
+
+           Assert.That(result, Is.EqualTo(expected));
+        }
     }
 
 
@@ -97,7 +116,7 @@ namespace Examples
     [CustomExceptionFilterAttribute]
     public class SimpleController : ApiController
     {
-        [Route("simpleget/{message}")]
+        [Route("simpleget/{message}",Name = "route")]
         [HttpGet]
         public HttpResponseMessage Get(string message)
         {

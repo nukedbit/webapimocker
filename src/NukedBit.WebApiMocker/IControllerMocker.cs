@@ -20,7 +20,7 @@ namespace NukedBit.WebApiMocker
 
         IControllerMocker<T> Request(Uri requestUri, HttpMethod method);
 
-        IControllerMocker<T> UrlHelperLink(Uri uri);
+        IControllerMocker<T> UrlHelperLink(string url);
 
         IControllerMocker<T> UrlHelperCustom(Action<Mock<UrlHelper>> urlHelperMockAction);
 

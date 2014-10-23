@@ -62,10 +62,10 @@ namespace NukedBit.WebApiMocker
             return this;
         }
 
-        public IControllerMocker<T> UrlHelperLink(Uri linkUri)
+        public IControllerMocker<T> UrlHelperLink(string url)
         {
             _urlHelperMock = new Mock<UrlHelper>();
-            _urlHelperMock.Setup(m => m.Link(It.IsAny<string>(), It.IsAny<object>()));
+            _urlHelperMock.Setup(m => m.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(url);
             return this;
         }
 
@@ -81,8 +81,7 @@ namespace NukedBit.WebApiMocker
 
             var request = new HttpRequestMessage(_method, _requestUri);
             if (_httpContent != null)
-                request.Content = _httpContent
-                    ;
+                request.Content = _httpContent;
             var configuration = new HttpConfiguration();
 
             request.SetConfiguration(configuration);
