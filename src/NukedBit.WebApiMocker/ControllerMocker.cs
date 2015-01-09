@@ -12,6 +12,10 @@ using Moq;
 
 namespace NukedBit.WebApiMocker
 {
+    /// <summary>
+    /// Mock your controller
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     internal class ControllerMocker<T> : IControllerMocker<T> where T : ApiController
     {
         private readonly T _controller;
