@@ -5,7 +5,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Http.Dependencies;
 using System.Web.Http.Filters;
+using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 using System.Web.Http.Services;
 using Moq;
@@ -23,11 +25,18 @@ namespace NukedBit.WebApiMocker
         private HttpMethod _method;
         private bool _hasBuild = false;
         private Mock<UrlHelper> _urlHelperMock;
+        private IDependencyScope _scope;
 
 
         public ControllerMocker(T controller)
         {
             _controller = controller;
+        }
+
+        public IControllerMocker<T> DependencyScope(IDependencyScope scope)
+        {
+            _scope = scope;
+            return this;
         }
 
 
@@ -51,7 +60,7 @@ namespace NukedBit.WebApiMocker
 
         public IControllerMocker<T> AutoMapFilters()
         {
-            _filters =  _controller.GetType().GetCustomAttributes(typeof (ExceptionFilterAttribute), true).Select(p=> new FilterInfo((IFilter)p,FilterScope.Controller));
+            _filters = _controller.GetType().GetCustomAttributes(typeof(ExceptionFilterAttribute), true).Select(p => new FilterInfo((IFilter)p, FilterScope.Controller));
             return this;
         }
 
@@ -80,6 +89,10 @@ namespace NukedBit.WebApiMocker
         {
 
             var request = new HttpRequestMessage(_method, _requestUri);
+
+            if (_scope != null)
+                request.Properties.Add(HttpPropertyKeys.DependencyScope, _scope);
+
             if (_httpContent != null)
                 request.Content = _httpContent;
             var configuration = new HttpConfiguration();

@@ -2,7 +2,10 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Dependencies;
 using System.Web.Http.Filters;
+using System.Web.Http.Hosting;
+using Moq;
 using NukedBit.WebApiMocker;
 using NUnit.Framework;
 using SharpTestsEx;
@@ -25,11 +28,36 @@ namespace Examples
                 .Build()
                 .Execute();
 
-            response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode(); 
 
             var simpleResponse = response.Content.ReadAsAsync<SimpleResponse>().GetAwaiter().GetResult();
 
             Assert.That(simpleResponse.Message, Is.EqualTo(expected));
+        }
+
+
+
+        [Test]
+        public void GetDependencyScope()
+        {
+            const string expected = "mymessage";
+
+            var dependencyScopeMock = new Mock<IDependencyScope>();
+            object myService = "test";
+            dependencyScopeMock.Setup(m => m.GetService(It.IsAny<Type>())).Returns(myService);
+
+            var simpleController = new SimpleController();
+            var response = simpleController
+                .Mocker()
+                .Configure(c => c.MapHttpAttributeRoutes())
+                .DependencyScope(dependencyScopeMock.Object)
+                .Request(new Uri("http://localhost/dependencyscope"), HttpMethod.Get)
+                .Build()
+                .Execute();
+
+            response.EnsureSuccessStatusCode(); 
+            var service = response.Content.ReadAsAsync<IDependencyScope>().GetAwaiter().GetResult();
+            Assert.AreEqual(service.GetService(typeof(object)), myService);
         }
 
         [Test]
@@ -130,6 +158,13 @@ namespace Examples
             if (string.IsNullOrEmpty(nullArg))
                 throw new ArgumentNullException("nullArg");
             return Request.CreateResponse(HttpStatusCode.OK, new SimpleResponse() { Message = message });
+        }
+
+        [Route("dependencyscope")]
+        [HttpGet]
+        public IDependencyScope Get()
+        {
+            return Request.GetDependencyScope();
         }
     }
 }
